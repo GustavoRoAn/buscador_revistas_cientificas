@@ -1,0 +1,61 @@
+---
+title: "Buscador de Revistas"
+author: "Gustavo Rojas Andrade"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+# Buscador de Revistas Científicas
+
+Este código es útil de referencia a la búsqueda y exportación de tablas con información de revistas científicas (journals) de acuerdo a varios criterios.
+
+```{r librerias}
+library(readr)
+library(tidyverse)
+```
+
+
+```{r lectura_tabla_en_R}
+journalrank <- read_delim("https://www.scimagojr.com/journalrank.php?out=xls", 
+                          delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+```
+
+```{r  Aplicacion_de_filtros1}
+Rev_filtradas = journalrank %>% 
+  filter(`SJR Best Quartile` == "Q1" | `SJR Best Quartile` == "Q2") %>% 
+  filter(Type == "journal") %>% 
+  filter(grepl("Process Chemistry", Categories))
+```
+
+```{r Visualizacion_tabla1}
+View(Rev_filtradas)
+
+```
+
+Es necesario sustituir la ruta *"ruta"* para la exportación correcta.
+
+```{r Exportacion_tabla1}
+write.csv(Rev_filtradas, "D:/DescargasGdim/Process_Chem.csv", col.names = TRUE) 
+```
+
+```{r Aplicacion_filtros2}
+Rev_filtradas2 = journalrank %>% 
+  filter(`SJR Best Quartile` == "Q1" | `SJR Best Quartile` == "Q2") %>% 
+  filter(Type == "journal") %>% 
+  filter(grepl("Water Science", Categories))
+```
+
+
+Es necesario sustituir la ruta *"ruta2"* para la exportación correcta.
+
+```{r}
+View(Rev_filtradas2)
+
+write.csv(Rev_filtradas2, "D:/DescargasGdim/Water_Science.csv", col.names = TRUE)
+```
+
+
