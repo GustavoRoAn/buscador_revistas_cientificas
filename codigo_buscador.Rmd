@@ -10,37 +10,48 @@ output:
 
 # Buscador de Revistas Científicas
 
-Este código es útil de referencia a la búsqueda y exportación de tablas con información de revistas científicas (journals) de acuerdo a varios criterios.
+Este código se puede utilizar como referencia a la búsqueda y exportación de tablas con información de revistas científicas (journals) de acuerdo a varios criterios.
 
+## Carga de librerías
 ```{r librerias}
 library(readr)
 library(tidyverse)
 ```
 
+## Lectura de tabla
 
 ```{r lectura_tabla_en_R}
 journalrank <- read_delim("https://www.scimagojr.com/journalrank.php?out=xls", 
                           delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
+colnames(journalrank) # Muestra los nombres de los campos de criterios de búsqueda.
 ```
+
+## Aplicación de filtros
 
 ```{r  Aplicacion_de_filtros1}
 Rev_filtradas = journalrank %>% 
-  filter(`SJR Best Quartile` == "Q1" | `SJR Best Quartile` == "Q2") %>% 
-  filter(Type == "journal") %>% 
-  filter(grepl("Process Chemistry", Categories))
+  filter(`SJR Best Quartile` == "Q1" | `SJR Best Quartile` == "Q2") %>%  # Filtado para los dos primeros cuartiles
+  filter(Type == "journal") %>% # Filtro para selección única de revistas
+  filter(grepl("Process Chemistry", Categories)) # Filtrado específico para un tema/categoría de revista.
 ```
+
+## Visualización de la tabla
 
 ```{r Visualizacion_tabla1}
 View(Rev_filtradas)
 
 ```
 
+## Descarga de la tabla con filtros.
+
 Es necesario sustituir la ruta *"ruta"* para la exportación correcta.
 
 ```{r Exportacion_tabla1}
 write.csv(Rev_filtradas, "D:/DescargasGdim/Process_Chem.csv", col.names = TRUE) 
 ```
+
+## Ejemplo para una segunda descarga
 
 ```{r Aplicacion_filtros2}
 Rev_filtradas2 = journalrank %>% 
